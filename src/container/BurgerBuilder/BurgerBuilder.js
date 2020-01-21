@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 const INGREDIENT_PRICE = {
     salad: 0.5,
     bacon: 0.6,
@@ -18,7 +20,8 @@ class BurgerBuilder extends Component {
             cheese:0
         },
         total_Price: 4,
-        purchaseable: false
+        purchaseable: false,
+        purchasing: false
     }
 
     addIngrediet=(type)=>{
@@ -70,6 +73,20 @@ class BurgerBuilder extends Component {
         })
     }
 
+    purchaseHandler=()=>{
+        console.log('purchase')
+        this.setState({
+            purchasing: true
+        })
+    }
+    purchasCancel=()=>{
+        this.setState({
+            purchasing: false
+        })
+    }
+    purchaseContinue=()=>{
+        alert('continue')
+    }
     render() {
         const disableInfo = {
             ...this.state.ingredient
@@ -79,6 +96,14 @@ class BurgerBuilder extends Component {
         }
         return(
             <Aux>
+                {this.state.purchasing && <Modal show={this.state.purchasing} modalClosed={this.purchasCancel}>
+                    <OrderSummary 
+                        ingredient={this.state.ingredient}
+                        purchaseContinue= {this.purchaseContinue}
+                        purchasCancel = {this.purchasCancel}
+                        price ={this.state.total_Price}
+                        />
+                </Modal>}
                 <Burger ingredient={this.state.ingredient} />
                 <BuildControls 
                     ingredientAdded = {this.addIngrediet}
@@ -86,6 +111,7 @@ class BurgerBuilder extends Component {
                     disableInfo ={disableInfo}
                     price= {this.state.total_Price}
                     orderNow={this.state.purchaseable}
+                    purchaseClick = {this.purchaseHandler}
                 />
             </Aux>
         )
