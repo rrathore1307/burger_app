@@ -17,7 +17,7 @@ const Order =(props)=> {
         textTransform: 'capitalize', 
         margin: '0 8px',
         display: 'inline-block',
-        padding: '5',
+        padding: '5px',
         border: '1px solid #ccc'
         }}
         key={ingredient.name}>{ingredient.name} ({ingredient.value})</span>
@@ -26,7 +26,7 @@ const Order =(props)=> {
     return (
         <div className='Order'>
         <p>Ingredients: {ingredientJSX}</p>
-        <p>Price: <strong>USD 4.22</strong></p>
+        <p>Price: <strong>USD {Number.parseFloat(props.price).toFixed(2)}</strong></p>
     </div>
     )
 }
