@@ -3,8 +3,11 @@ import './Input.css'
 const Input = (props) => {
     let InputElement = null;
     let classes =['InputElement']
+    let errorMsg = '';
     if(props.isInvalid && props.touched && props.shouldValidate) {
         classes.push('Invalid')
+        errorMsg = props.errorMsg;
+        console.log(errorMsg)
     }
 
     switch (props.elementType) {
@@ -45,6 +48,7 @@ const Input = (props) => {
         <div className='Input'>
             <label className="Label">{props.label}</label>
             {InputElement}
+            <span className='ErrorMsg'>{errorMsg}</span>
         </div>
     )
 }

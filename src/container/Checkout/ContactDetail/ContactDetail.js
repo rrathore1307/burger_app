@@ -6,6 +6,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input';
 class ContactDetail extends Component {
     state = {
+        formIsValid: false,
         orderForm: {
             name: {
                 elementType: 'input',
@@ -19,6 +20,7 @@ class ContactDetail extends Component {
                     minLength: 3,
                     maxLength: 7
                 },
+                errorMsg: 'Please enter valid name!',
                 valid: false,
                 touched: false
             },
@@ -33,6 +35,7 @@ class ContactDetail extends Component {
                     required: true
                 },
                 valid: false,
+                errorMsg: 'Please enter valid email!',
                 touched: false
             },
             street: {
@@ -45,6 +48,7 @@ class ContactDetail extends Component {
                 validation: {
                     required: true
                 },
+                errorMsg: 'Please enter valid street!',
                 valid: false,
                 touched: false
             },
@@ -67,6 +71,7 @@ class ContactDetail extends Component {
                 validation: {
                     required: true
                 },
+                errorMsg: 'Please enter valid country name!',
                 valid: false,
                 touched: false
             },
@@ -78,7 +83,8 @@ class ContactDetail extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' }]
                 },
                 value: 'fastest',
-                touched: false
+                touched: false,
+                valid: true,
             }
         }
 
@@ -159,11 +165,18 @@ class ContactDetail extends Component {
         updatedFormElement.valid = this.checkValidity(event.target.value, updatedFormElement.validation)
         updatedFormElement.touched = true;
         updatedForm[identifier] = updatedFormElement;
+        let formIsValid =true;
+        console.log('event ', updatedForm)
+        for(let formElement in updatedForm) {
+            console.log('form')
+            formIsValid = updatedForm[formElement].valid && formIsValid;
+        }
 
         this.setState({
-            orderForm: updatedForm
+            orderForm: updatedForm,
+            formIsValid: formIsValid
         })
-        // console.group('dsds');
+        console.log(this.state.formIsValid);
 
     }
     render() {
@@ -186,9 +199,10 @@ class ContactDetail extends Component {
                         value={formElement.config.value}
                         touched={formElement.config.touched}
                         shouldValidate= {formElement.config.validation}
+                        errorMsg = {formElement.config.errorMsg}
                         />
                 ))}
-                <Button btnType='Success' clicked={(event) => { this.orderHandler(event) }}>Order</Button>
+                <Button btnType='Success' disabled={!this.state.formIsValid} clicked={(event) => { this.orderHandler(event) }}>Order</Button>
             </form>)
         if (this.state.loader) {
             form = <Spinner />
