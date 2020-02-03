@@ -9,17 +9,10 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import WithErrorHandler from '../../hoc/WithErrorHandler/WithErrorHandler';
 import {connect} from 'react-redux'
 import * as actionTypes from '../../store/actions'
-const INGREDIENT_PRICE = {
-    salad: 0.5,
-    bacon: 0.6,
-    meat: 1.2,
-    cheese: 0.8
-}
+
 class BurgerBuilder extends Component {
 
     state = {
-        ingredient: null,
-        total_Price: 4,
         purchaseable: false,
         purchasing: false,
         loader: false,
@@ -61,25 +54,25 @@ class BurgerBuilder extends Component {
         // this.updatePuchaseIngredient(updateIngredients);
     }
     removeIngredient = (type) => {
-        const oldCount = this.state.ingredient[type];
-        if (oldCount === 0) {
-            return;
-        }
-        const updatedCount = oldCount - 1;
-        const updateIngredients = {
-            ...this.state.ingredient
-        }
-        updateIngredients[type] = updatedCount;
-        const priceAddition = INGREDIENT_PRICE[type];
-        const oldPrice = this.state.total_Price;
-        const newPrice = oldPrice - priceAddition;
+        // const oldCount = this.state.ingredient[type];
+        // if (oldCount === 0) {
+        //     return;
+        // }
+        // const updatedCount = oldCount - 1;
+        // const updateIngredients = {
+        //     ...this.state.ingredient
+        // }
+        // updateIngredients[type] = updatedCount;
+        // const priceAddition = INGREDIENT_PRICE[type];
+        // const oldPrice = this.state.total_Price;
+        // const newPrice = oldPrice - priceAddition;
 
-        this.setState({
-            total_Price: newPrice,
-            ingredient: updateIngredients
-        })
-        console.log(this.state.ingredient)
-        this.updatePuchaseIngredient(updateIngredients);
+        // this.setState({
+        //     total_Price: newPrice,
+        //     ingredient: updateIngredients
+        // })
+        // console.log(this.state.ingredient)
+        // this.updatePuchaseIngredient(updateIngredients);
     }
     updatePuchaseIngredient = (updateIngredients) => {
         const sum = Object.keys(updateIngredients).map(igKey => {
@@ -134,7 +127,7 @@ class BurgerBuilder extends Component {
                         ingredientAdded={this.props.onIngredientAdd}
                         ingredientRemove={this.props.onIngredientRemove}
                         disableInfo={disableInfo}
-                        price={this.state.total_Price}
+                        price={this.props.totalPrice}
                         orderNow={this.state.purchaseable}
                         purchaseClick={this.purchaseHandler}
                     />
@@ -145,7 +138,7 @@ class BurgerBuilder extends Component {
                 ingredient={this.state.ingredient}
                 purchaseContinue={this.purchaseContinue}
                 purchasCancel={this.purchasCancel}
-                price={this.state.total_Price}
+                price={this.props.totalPrice}
             />
 
             if (this.state.loader) {
@@ -166,7 +159,8 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state=>{
     return {
-        ingredients: state.ingredients
+        ingredients: state.ingredients,
+        totalPrice: state.totalPrice
     }
 }
 
