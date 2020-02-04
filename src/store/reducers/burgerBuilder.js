@@ -1,4 +1,4 @@
-import * as actionTypes from './actions';
+import * as actionTypes from '../actions/actionTypes';
 const inititalState = {
     ingredients: {
         salad: 0,
@@ -21,18 +21,18 @@ const reducer = (state = inititalState, action) => {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] + 1
+                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICE[action.payload.ingredientName]
+                totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
             };
         case actionTypes.REMOVE_INGREDIENTS:
             return {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] - 1
+                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
                 },
-                totalPrice: state.totalPrice - INGREDIENT_PRICE[action.payload.ingredientName]
+                totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
             };
         default:
             return state;
