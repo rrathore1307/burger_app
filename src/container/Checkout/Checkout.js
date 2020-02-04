@@ -42,7 +42,6 @@ class Checkout extends Component {
                     checkoutCancel={this.processCheckoutCancel}
                 />
                 <Route path={this.props.match.path + '/contact-detail'} component={ContactDetail} />
-                )} />
             </div>
 
         )
@@ -51,8 +50,8 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burgerReducer.ingredients,
+        totalPrice: state.burgerReducer.totalPrice
     }
 }
 
