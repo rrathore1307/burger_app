@@ -32,6 +32,23 @@ const order = (state = inititalState, action) => {
                 ...state,
                 loading: false
             };
+        case actionTypes.FETCH_ORDER_START:
+            return {
+                ...state,
+                loading: true
+            }
+        case actionTypes.FETCH_ORDER_FAILED:
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            }
+        case actionTypes.FETCH_ORDER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                orders: action.orders
+            }
         default:
             return state;
     }
