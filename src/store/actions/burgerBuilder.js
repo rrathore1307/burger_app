@@ -23,8 +23,7 @@ export const dispatchIngredient=(ings)=>{
 
 export const fetchFailedIngredient=()=>{
     return {
-        type: actionType.DISPATCH_INGREDIENTS,
-        error: true
+        type: actionType.FEATCH_FAILED_INGREDIENTS
     }
 }
 

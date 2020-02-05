@@ -1,42 +1,45 @@
-import * as actionTypes from '../actions/actionTypes';
-const inititalState = {
-    ingredients: {
-        salad: 0,
-        bacon: 0,
-        cheese: 0,
-        meat: 0
-    },
-    totalPrice: 4
-}
-const INGREDIENT_PRICE = {
-    salad: 0.5,
-    bacon: 0.6,
-    meat: 1.2,
-    cheese: 0.8
-}
-const order = (state = inititalState, action) => {
-    switch (action.type) {
-        case actionTypes.ADD_INGREDIENTS:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-                },
-                totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
-            };
-        case actionTypes.REMOVE_INGREDIENTS:
-            return {
-                ...state,
-                ingredients: {
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-                },
-                totalPrice: state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
-            };
-        default:
-            return state;
+import * as actionType from './actionTypes';
+import axios from '../../axios-orders'
+export const purchaseBurgerSuccess=(orderId, orderData)=>{
+    return {
+        type: actionType.PURCHASE_BURGER_SUCCESS,
+        id: orderId.name,
+        orderData: orderData
     }
 }
 
-export default order;
+
+
+export const purchaseBurgerFaild=(error)=>{
+    return {
+        type: actionType.PURCHASE_BURGER_FAILED,
+        error: error
+    }
+}
+
+
+
+export const purchaseBurger=(orderData)=>{
+    return dispatch=>{
+        dispatch(purchaseBurgerStart())
+        axios.post('orders.json', orderData)
+            .then(res => {
+                dispatch(purchaseBurgerSuccess(res.data, orderData))
+            })
+            .catch(error => {
+                dispatch(purchaseBurgerFaild(error))
+            })
+    }
+}
+
+export const purchaseBurgerStart =()=> {
+    return {
+        type: actionType.PURCHASE_BURGER_START
+    }
+}
+
+export const purchaseInit =()=> {
+    return {
+        type: actionType.PURCHASE_INIT
+    }
+}

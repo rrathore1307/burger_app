@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import './ContactDetail.css';
-import axios from '../../../axios-orders'
+// import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input';
+import * as actionType from '../../../store/actions/index'
 import {connect} from 'react-redux';
 class ContactDetail extends Component {
     state = {
@@ -129,22 +130,23 @@ class ContactDetail extends Component {
             orderData: orderFormData
         }
 
-        axios.post('orders.json', order)
-            .then(response => {
-                this.setState({
-                    loader: false,
-                    purchasing: false
-                })
-                this.props.history.push('/')
-                // console.log(response)
-            })
-            .catch(error => {
-                this.setState({
-                    loader: false,
-                    purchasing: false
-                })
-                // console.log(error)
-            })
+        this.props.purchaseStart(order);
+        // axios.post('orders.json', order)
+        //     .then(response => {
+        //         this.setState({
+        //             loader: false,
+        //             purchasing: false
+        //         })
+        //         this.props.history.push('/')
+        //         // console.log(response)
+        //     })
+        //     .catch(error => {
+        //         this.setState({
+        //             loader: false,
+        //             purchasing: false
+        //         })
+        //         // console.log(error)
+        //     })
 
         // console.log('form submited')
         // console.log(this.props)
@@ -163,7 +165,7 @@ class ContactDetail extends Component {
         updatedFormElement.touched = true;
         updatedForm[identifier] = updatedFormElement;
         let formIsValid =true;
-        console.log('event ', updatedForm)
+        // console.log('event ', updatedForm)
         for(let formElement in updatedForm) {
             console.log('form')
             formIsValid = updatedForm[formElement].valid && formIsValid;
@@ -173,7 +175,7 @@ class ContactDetail extends Component {
             orderForm: updatedForm,
             formIsValid: formIsValid
         })
-        console.log(this.state.formIsValid);
+        // console.log(this.state.formIsValid);
 
     }
     render() {
@@ -184,7 +186,7 @@ class ContactDetail extends Component {
                 config: this.state.orderForm[key]
             })
         }
-        console.log(formElementArray)
+        // console.log(formElementArray)
         let form = (
             <form>
                 {formElementArray.map(formElement => (
@@ -201,7 +203,7 @@ class ContactDetail extends Component {
                 ))}
                 <Button btnType='Success' disabled={!this.state.formIsValid} clicked={(event) => { this.orderHandler(event) }}>Order</Button>
             </form>)
-        if (this.state.loader) {
+        if (this.props.loading) {
             form = <Spinner />
         }
         return (
@@ -215,9 +217,15 @@ class ContactDetail extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burgerReducer.ingredients,
+        price: state.burgerReducer.totalPrice,
+        loading: state.orderReducer.loading
+    }
+}
+const mapDispatchToProps= dispatch=> {
+    return {
+        purchaseStart: (orderData)=>dispatch(actionType.purchaseBurger(orderData))
     }
 }
 
-export default connect(mapStateToProps)(ContactDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDetail);

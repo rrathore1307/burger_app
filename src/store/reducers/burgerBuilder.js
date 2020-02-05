@@ -33,17 +33,13 @@ const burgerBuilder = (state = inititalState, action) => {
         case actionTypes.DISPATCH_INGREDIENTS:
             return {
                 ...state,
-                ingredients: {
-                    ...action.ingredients,
-                },
+                ingredients: action.ingredients,
+                error: false
             };
         case actionTypes.FEATCH_FAILED_INGREDIENTS:
             return {
                 ...state,
-                ingredients: {
-                    ...state.ingredients,
-                },
-                error: action.error
+                error: true
             };
         default:
             return state;
