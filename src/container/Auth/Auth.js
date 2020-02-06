@@ -1,48 +1,56 @@
-import React, { Component } from 'react'
+import React, {useState } from 'react'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import './Auth.css'
 import * as actionType from '../../store/actions/index';
 import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
-class Auth extends Component {
-    state = {
-        controls: {
-            email: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'email',
-                    placeholder: 'E-Mail'
-                },
-                value: '',
-                validation: {
-                    required: true
-                },
-                valid: false,
-                errorMsg: 'Please enter valid email!',
-                touched: false
-            },
-            password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'password',
-                    placeholder: 'Password'
-                },
-                value: '',
-                validation: {
-                    required: true,
-                    minLength: 7
-                },
-                valid: false,
-                errorMsg: 'Please enter password',
-                touched: false
-            }
-        },
-        formIsValid: false,
-        isSignup: false
-    }
+const Auth =(props)=> {
 
-    checkValidity = (value, rules) => {
+    const [formState, setFormState] = useState({
+
+            controls: {
+                email: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'email',
+                        placeholder: 'E-Mail'
+                    },
+                    value: '',
+                    validation: {
+                        required: true
+                    },
+                    valid: false,
+                    errorMsg: 'Please enter valid email!',
+                    touched: false
+                },
+                password: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'password',
+                        placeholder: 'Password'
+                    },
+                    value: '',
+                    validation: {
+                        required: true,
+                        minLength: 7
+                    },
+                    valid: false,
+                    errorMsg: 'Please enter password',
+                    touched: false
+                }
+            },
+    })
+
+    const [formIsValidState, setFormsIsvalidState] = useState({
+        formIsValid: false
+    })
+
+    const [isSignupState, setIsSignupState] = useState({
+        isSignup: false
+    })
+
+    const checkValidity = (value, rules) => {
         let isValid = true;
         if (rules && rules.required) {
             isValid = value.trim() !== '' && isValid
@@ -58,16 +66,15 @@ class Auth extends Component {
         return isValid
 
     }
-    swithToSignup = () => {
-        this.setState((preState) => {
-            return {
-                isSignup: !preState.isSignup
-            }
+    const swithToSignup = () => {
+        setIsSignupState({
+            isSignup: !isSignupState.isSignup
         })
+
     }
-    handleInputChange = (event, identifier) => {
+    const handleInputChange = (event, identifier) => {
         const updatedForm = {
-            ...this.state.controls
+            ...formState.controls
         }
 
         const updatedFormElement = {
@@ -75,7 +82,7 @@ class Auth extends Component {
         }
 
         updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(event.target.value, updatedFormElement.validation)
+        updatedFormElement.valid = checkValidity(event.target.value, updatedFormElement.validation)
         updatedFormElement.touched = true;
         updatedForm[identifier] = updatedFormElement;
         let formIsValid = true;
@@ -85,49 +92,27 @@ class Auth extends Component {
             formIsValid = updatedForm[formElement].valid && formIsValid;
         }
 
-        this.setState({
+        setFormState({
             controls: updatedForm,
+        })
+
+        setFormsIsvalidState({
             formIsValid: formIsValid
         })
         // console.log(this.state.formIsValid);
     }
 
-    orderHandler = (event) => {
+    const orderHandler = (event) => {
         event.preventDefault();
-
-
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
-        // console.log('[Auth]',order)
-
-        // this.props.purchaseStart(order);
-        // axios.post('orders.json', order)
-        //     .then(response => {
-        //         this.setState({
-        //             loader: false,
-        //             purchasing: false
-        //         })
-        //         this.props.history.push('/')
-        //         // console.log(response)
-        //     })
-        //     .catch(error => {
-        //         this.setState({
-        //             loader: false,
-        //             purchasing: false
-        //         })
-        //         // console.log(error)
-        //     })
-
-        // console.log('form submited')
-        // console.log(this.props)
+        props.onAuth(formState.controls.email.value, formState.controls.password.value, isSignupState.isSignup)
     }
 
-    render() {
         let formElementArray = [];
         let errorMessage = ''
-        for (let key in this.state.controls) {
+        for (let key in formState.controls) {
             formElementArray.push({
                 id: key,
-                config: this.state.controls[key]
+                config: formState.controls[key]
             })
         }
         // console.log(formElementArray)
@@ -137,7 +122,7 @@ class Auth extends Component {
                     <Input key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        changed={(event) => this.handleInputChange(event, formElement.id)}
+                        changed={(event) => handleInputChange(event, formElement.id)}
                         isInvalid={!formElement.config.valid}
                         value={formElement.config.value}
                         touched={formElement.config.touched}
@@ -145,13 +130,13 @@ class Auth extends Component {
                         errorMsg={formElement.config.errorMsg}
                     />
                 ))}
-                <Button btnType='Success' disabled={!this.state.formIsValid} clicked={(event) => { this.orderHandler(event) }}>Submit</Button>
+                <Button btnType='Success' disabled={!formIsValidState.formIsValid} clicked={(event) => { orderHandler(event) }}>Submit</Button>
             </form>)
-        if (this.props.loading) {
+        if (props.loading) {
             form = <Spinner />
         }
-        if (this.props.error) {
-            errorMessage = this.props.error.message
+        if (props.error) {
+            errorMessage = props.error.message
         }
         return (
             <div className='Auth'>
@@ -160,11 +145,9 @@ class Auth extends Component {
                 </span>
                 {/* Please fill Contact form */}
                 {form}
-                <Button btnType='Danger' clicked={() => this.swithToSignup()}>Switch to {!this.state.isSignup ? 'Signup' : 'Signin'}</Button>
+                <Button btnType='Danger' clicked={() => swithToSignup()}>Switch to {!isSignupState.isSignup ? 'Signup' : 'Signin'}</Button>
             </div>
         )
-
-    }
 }
 
 const mapStateToProps = state => {
