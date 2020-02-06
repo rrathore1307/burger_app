@@ -130,7 +130,7 @@ class ContactDetail extends Component {
             orderData: orderFormData
         }
 
-        this.props.purchaseStart(order);
+        this.props.purchaseStart(order, this.props.token);
         // axios.post('orders.json', order)
         //     .then(response => {
         //         this.setState({
@@ -219,12 +219,13 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerReducer.ingredients,
         price: state.burgerReducer.totalPrice,
-        loading: state.orderReducer.loading
+        loading: state.orderReducer.loading,
+        token: state.authReducer.token
     }
 }
 const mapDispatchToProps= dispatch=> {
     return {
-        purchaseStart: (orderData)=>dispatch(actionType.purchaseBurger(orderData))
+        purchaseStart: (orderData, token)=>dispatch(actionType.purchaseBurger(orderData, token))
     }
 }
 

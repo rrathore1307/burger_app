@@ -1,13 +1,13 @@
-import React, {Component } from 'react'
+import React, { Component } from 'react'
 import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import './Auth.css'
 import * as actionType from '../../store/actions/index';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 class Auth extends Component {
     state = {
-        controls : {
+        controls: {
             email: {
                 elementType: 'input',
                 elementConfig: {
@@ -38,27 +38,34 @@ class Auth extends Component {
                 touched: false
             }
         },
-        formIsValid: false
+        formIsValid: false,
+        isSignup: false
     }
 
     checkValidity = (value, rules) => {
-        let isValid =true;
-        if(rules && rules.required) {
-            isValid = value.trim() !=='' && isValid
+        let isValid = true;
+        if (rules && rules.required) {
+            isValid = value.trim() !== '' && isValid
         }
 
-        if(rules && rules.minLength) {
-            isValid = value.length > rules.minLength && isValid  
+        if (rules && rules.minLength) {
+            isValid = value.length > rules.minLength && isValid
         }
 
-        if(rules && rules.maxLength) {
-            isValid = value.length < rules.maxLength && isValid  
+        if (rules && rules.maxLength) {
+            isValid = value.length < rules.maxLength && isValid
         }
         return isValid
-        
-    }
 
-    handleInputChange=(event, identifier)=>{
+    }
+    swithToSignup = () => {
+        this.setState((preState) => {
+            return {
+                isSignup: !preState.isSignup
+            }
+        })
+    }
+    handleInputChange = (event, identifier) => {
         const updatedForm = {
             ...this.state.controls
         }
@@ -71,9 +78,9 @@ class Auth extends Component {
         updatedFormElement.valid = this.checkValidity(event.target.value, updatedFormElement.validation)
         updatedFormElement.touched = true;
         updatedForm[identifier] = updatedFormElement;
-        let formIsValid =true;
+        let formIsValid = true;
         // console.log('event ', updatedForm)
-        for(let formElement in updatedForm) {
+        for (let formElement in updatedForm) {
             console.log('form')
             formIsValid = updatedForm[formElement].valid && formIsValid;
         }
@@ -83,14 +90,13 @@ class Auth extends Component {
             formIsValid: formIsValid
         })
         // console.log(this.state.formIsValid);
-
     }
 
     orderHandler = (event) => {
         event.preventDefault();
 
-       
-        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value)
+
+        this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
         // console.log('[Auth]',order)
 
         // this.props.purchaseStart(order);
@@ -117,6 +123,7 @@ class Auth extends Component {
 
     render() {
         let formElementArray = [];
+        let errorMessage = ''
         for (let key in this.state.controls) {
             formElementArray.push({
                 id: key,
@@ -130,38 +137,46 @@ class Auth extends Component {
                     <Input key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        changed= {(event)=>this.handleInputChange(event, formElement.id)}
-                        isInvalid= {!formElement.config.valid}
+                        changed={(event) => this.handleInputChange(event, formElement.id)}
+                        isInvalid={!formElement.config.valid}
                         value={formElement.config.value}
                         touched={formElement.config.touched}
-                        shouldValidate= {formElement.config.validation}
-                        errorMsg = {formElement.config.errorMsg}
-                        />
+                        shouldValidate={formElement.config.validation}
+                        errorMsg={formElement.config.errorMsg}
+                    />
                 ))}
                 <Button btnType='Success' disabled={!this.state.formIsValid} clicked={(event) => { this.orderHandler(event) }}>Submit</Button>
             </form>)
         if (this.props.loading) {
             form = <Spinner />
         }
+        if (this.props.error) {
+            errorMessage = this.props.error.message
+        }
         return (
             <div className='Auth'>
+                <span className='errorMsg'>
+                    {errorMessage}
+                </span>
                 {/* Please fill Contact form */}
-            {form}
+                {form}
+                <Button btnType='Danger' clicked={() => this.swithToSignup()}>Switch to {!this.state.isSignup ? 'Signup' : 'Signin'}</Button>
             </div>
         )
-    
-        }
-}
 
-const mapStateToProps = state=> {
-    return {
-        loading: state.authReducer.loading
     }
 }
 
-const mapDispatchToProps =dispatch=>{
+const mapStateToProps = state => {
     return {
-        onAuth: (email, password)=>dispatch(actionType.auth(email, password))
+        loading: state.authReducer.loading,
+        error: state.authReducer.error
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password, isSignup) => dispatch(actionType.auth(email, password, isSignup))
     }
 }
 
