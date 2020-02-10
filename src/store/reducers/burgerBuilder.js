@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 const inititalState = {
     ingredients: null,
     totalPrice: 4,
-    error: false
+    error: false,
+    building: false
 }
 const INGREDIENT_PRICE = {
     salad: 0.5,
@@ -18,6 +19,7 @@ const addIngredient =(state, action)=> {
             ...state.ingredients,
             [action.ingredientName]: state.ingredients[action.ingredientName] + 1
         },
+        building: true,
         totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
     };
 }

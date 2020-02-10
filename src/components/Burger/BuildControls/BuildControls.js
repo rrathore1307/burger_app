@@ -19,7 +19,9 @@ const BuildControls = (props) => (
                 disable = {props.disableInfo[ctrl.type]}
                 />
         ))}
-        <button className='OrderButton' disabled={!props.orderNow} onClick={props.purchaseClick}>Order Now</button>
+        <button className='OrderButton' disabled={!props.orderNow} onClick={props.purchaseClick}>
+            {props.isAuth ? 'Order Now': 'Signup to checkout'}
+            </button>
     </div>
 )
 export default BuildControls

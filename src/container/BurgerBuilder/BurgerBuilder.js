@@ -87,6 +87,10 @@ class BurgerBuilder extends Component {
         this.setState({
             purchasing: true
         })
+        if(!this.props.isAuthenticate) {
+            this.props.onSetRedirectPath('/checkout');
+            this.props.history.push('/auth')
+        }
     }
     purchasCancel = () => {
         this.setState({
@@ -99,7 +103,7 @@ class BurgerBuilder extends Component {
     }
     render() {
         const disableInfo = {
-            ...this.state.ingredient
+            ...this.props.ings
         }
         for (let key in disableInfo) {
             disableInfo[key] = disableInfo[key] <= 0;
@@ -116,6 +120,7 @@ class BurgerBuilder extends Component {
                         ingredientRemove={this.props.onIngredientRemove}
                         disableInfo={disableInfo}
                         price={this.props.totalPrice}
+                        isAuth = {this.props.isAuthenticate}
                         orderNow={this.updatePuchaseIngredient(this.props.ings)}
                         purchaseClick={this.purchaseHandler}
                     />
@@ -149,7 +154,9 @@ const mapStateToProps = state=>{
     return {
         ings: state.burgerReducer.ingredients,
         totalPrice: state.burgerReducer.totalPrice,
-        error: state.burgerReducer.error
+        error: state.burgerReducer.error,
+        isAuthenticate: state.authReducer.token !== null,
+        buildingBurger: state.burgerReducer.building
     }
 }
 
@@ -158,7 +165,8 @@ const mapDispatchToProps = dispatch=> {
         onIngredientRemove: (ingredientName)=>dispatch(actionTypes.removeIngredient(ingredientName)),
         onIngredientAdd: (ingredientName)=>dispatch(actionTypes.addIngredient(ingredientName)),
         onInitIngredient: ()=>dispatch(actionTypes.initIngredient()),
-        onInitPurchase: ()=>dispatch(actionTypes.purchaseInit())
+        onInitPurchase: ()=>dispatch(actionTypes.purchaseInit()),
+        onSetRedirectPath: (redirectPath)=>dispatch(actionTypes.setAuthRedirectPath(redirectPath))
     }
 }
 

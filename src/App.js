@@ -6,6 +6,9 @@ import Checkout from './container/Checkout/Checkout';
 import {Route} from 'react-router-dom'
 import Orders from './container/Orders/Orders';
 import Auth from './container/Auth/Auth';
+import Logout from './container/Auth/Logout/Logout';
+import {connect} from 'react-redux'
+import * as actionType from '../src/store/actions/index'
 class App extends Component {
   state = {
     show : true
@@ -13,7 +16,7 @@ class App extends Component {
   
 
   componentDidMount() {
-   
+    this.props.onAutoAuthCheck();
   }
 
   render() {
@@ -26,10 +29,17 @@ class App extends Component {
          <Route path='/checkout' component={Checkout} />
          <Route path='/orders' component={Orders}/>
          <Route path='/auth' component={Auth}/>
+         <Route path='/logout' component={Logout} />
         </Layout>
       </div>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps=dispatch=>{
+  return {
+    onAutoAuthCheck: ()=>dispatch(actionType.authCheckState())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
