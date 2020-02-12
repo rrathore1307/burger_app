@@ -3,43 +3,62 @@ import './App.css';
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './container/BurgerBuilder/BurgerBuilder';
 import Checkout from './container/Checkout/Checkout';
-import {Route} from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Orders from './container/Orders/Orders';
 import Auth from './container/Auth/Auth';
 import Logout from './container/Auth/Logout/Logout';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import * as actionType from '../src/store/actions/index'
 class App extends Component {
   state = {
-    show : true
+    show: true
   }
-  
+
 
   componentDidMount() {
     this.props.onAutoAuthCheck();
   }
 
   render() {
+    let routes = (
+      <Switch>
+        <Route path='/auth' component={Auth} />
+        <Route path='/' exact component={BurgerBuilder} />
+        <Redirect to='/' />
+      </Switch>
+    )
+
+    if (this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path='/' exact component={BurgerBuilder} />
+          <Route path='/checkout' component={Checkout} />
+          <Route path='/orders' component={Orders} />
+          <Route path='/logout' component={Logout} />
+        </Switch>
+      )
+    }
+
     return (
       <div>
         <Layout>
-         {/* <BurgerBuilder /> */}
-         {/* <Checkout /> */}
-         <Route path='/' exact component={BurgerBuilder} />
-         <Route path='/checkout' component={Checkout} />
-         <Route path='/orders' component={Orders}/>
-         <Route path='/auth' component={Auth}/>
-         <Route path='/logout' component={Logout} />
+          {routes}
         </Layout>
       </div>
     );
   }
 }
 
-const mapDispatchToProps=dispatch=>{
+const mapStateToProps = state => {
   return {
-    onAutoAuthCheck: ()=>dispatch(actionType.authCheckState())
+    isAuthenticated: state.authReducer.token !== null
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    onAutoAuthCheck: () => dispatch(actionType.authCheckState())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
