@@ -127,7 +127,8 @@ class ContactDetail extends Component {
         const order = {
             ingredients: this.props.ings,
             price: this.props.price,
-            orderData: orderFormData
+            orderData: orderFormData,
+            userId: this.props.userId
         }
 
         this.props.purchaseStart(order, this.props.token);
@@ -220,7 +221,8 @@ const mapStateToProps = state => {
         ings: state.burgerReducer.ingredients,
         price: state.burgerReducer.totalPrice,
         loading: state.orderReducer.loading,
-        token: state.authReducer.token
+        token: state.authReducer.token,
+        userId: state.authReducer.userId
     }
 }
 const mapDispatchToProps= dispatch=> {
