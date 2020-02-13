@@ -1,14 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import './App.css';
 import Layout from './hoc/Layout/Layout';
 import BurgerBuilder from './container/BurgerBuilder/BurgerBuilder';
-import Checkout from './container/Checkout/Checkout';
+// import Checkout from './container/Checkout/Checkout';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import Orders from './container/Orders/Orders';
 import Auth from './container/Auth/Auth';
 import Logout from './container/Auth/Logout/Logout';
 import { connect } from 'react-redux'
 import * as actionType from '../src/store/actions/index'
+import asyncComponent from './hoc/asyncComponent/AsyncComponent';
+
+const Checkout = asyncComponent(() =>
+    import('./container/Checkout/Checkout').then(module => module.default)
+)
+
+// const Maps = asyncComponent(() =>
+//     import('./Maps/Maps').then(module => module.default)
+// )
+
+// const Blog = asyncComponent(() =>
+//     import('./Blog/Blog').then(module => module.default)
+// )
+
 class App extends Component {
   state = {
     show: true
