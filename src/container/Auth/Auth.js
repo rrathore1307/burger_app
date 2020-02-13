@@ -6,6 +6,7 @@ import * as actionType from '../../store/actions/index';
 import { connect } from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
+import { checkValidity } from '../../Shared/utility'
 const Auth =(props)=> {
 
     const [formState, setFormState] = useState({
@@ -56,22 +57,6 @@ const Auth =(props)=> {
         isSignup: false
     })
 
-    const checkValidity = (value, rules) => {
-        let isValid = true;
-        if (rules && rules.required) {
-            isValid = value.trim() !== '' && isValid
-        }
-
-        if (rules && rules.minLength) {
-            isValid = value.length > rules.minLength && isValid
-        }
-
-        if (rules && rules.maxLength) {
-            isValid = value.length < rules.maxLength && isValid
-        }
-        return isValid
-
-    }
     const swithToSignup = () => {
         setIsSignupState({
             isSignup: !isSignupState.isSignup
