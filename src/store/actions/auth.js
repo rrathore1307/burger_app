@@ -22,11 +22,8 @@ export const authStart = () => {
 }
 
 export const authLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expirationDate');
-    localStorage.removeItem('userId');
     return {
-        type: actionType.AUTH_LOGOUT,
+        type: actionType.AUTH_INITIAT,
     }
 }
 
