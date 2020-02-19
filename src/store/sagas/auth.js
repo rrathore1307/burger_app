@@ -13,7 +13,7 @@ export function* checkAuthSaga(action) {
     console.log('checkAuthSaga call')
     // yield delay(action.expireInTime);
     yield delay(10000);
-    yield put(actions.authLogout());
+    // yield put(actions.authLogout());
 }
 
 export function* authUserSaga(action) {
