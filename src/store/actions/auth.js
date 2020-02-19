@@ -1,5 +1,4 @@
 import * as actionType from './actionTypes';
-import axios from 'axios'
 export const authSuccess = (idToken, localId) => {
     return {
         type: actionType.AUTH_SUCCESS,
@@ -55,21 +54,9 @@ export const checkAuthTimeout = (expireInTime) => {
 }
 
 export const authCheckState=()=>{
-    return dispatch=>{
-        const token = localStorage.getItem('token')
-        if(!token) {
-            dispatch(authLogout())
-        }else {
-            const expirationDate = new Date(localStorage.getItem('expirationDate'));
-            if(expirationDate > new Date()) {
-                dispatch(authLogout())
-            }else {
-                const userId = localStorage.getItem('userId');
-                dispatch(authSuccess(token, userId));
-                dispatch(checkAuthTimeout(expirationDate.getSeconds()- new Date().getSeconds()))
-            }
-            // dispatch(checkAuthTimeout())
-        }
+    console.log('authCheckState call')
+    return {
+        type: actionType.CHECK_AUTO_AUTH_STATE
     }
 }
 

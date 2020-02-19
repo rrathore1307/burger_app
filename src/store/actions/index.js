@@ -2,6 +2,8 @@ export {
     addIngredient,
     removeIngredient,
     initIngredient,
+    dispatchIngredient,
+    fetchFailedIngredient
 } from './burgerBuilder';
 
 export {
