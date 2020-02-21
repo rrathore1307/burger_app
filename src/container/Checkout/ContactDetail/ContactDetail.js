@@ -126,7 +126,6 @@ const ContactDetail =props=> {
         })
         let formIsValid = true;
         for (let formElement in updatedForm) {
-            console.log('form')
             formIsValid = updatedForm[formElement].valid && formIsValid;
         }
 

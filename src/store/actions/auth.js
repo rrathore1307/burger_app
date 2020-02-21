@@ -21,7 +21,6 @@ export const authStart = () => {
 }
 
 export const authLogout = () => {
-    console.log('authlogout call')
     return {
         type: actionType.AUTH_INITIAT,
     }
@@ -41,7 +40,6 @@ export const setAuthRedirectPath = (redirectpath) => {
 }
 
 export const checkAuthTimeout = (expireInTime) => {
-    console.log('checkAuthTimeout', expireInTime)
     return {
         type: actionType.AUTH_CHECKOUT_TIME,
         expireInTime: 10000
@@ -54,7 +52,6 @@ export const checkAuthTimeout = (expireInTime) => {
 }
 
 export const authCheckState=()=>{
-    console.log('authCheckState call')
     return {
         type: actionType.CHECK_AUTO_AUTH_STATE
     }

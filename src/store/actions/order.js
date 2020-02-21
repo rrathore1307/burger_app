@@ -20,7 +20,6 @@ export const purchaseBurgerFaild = (error) => {
 
 
 export const purchaseBurger = (orderData, token) => {
-    console.log('purchaseBurger call')
     return {
         type: actionType.PURCHASE_BURGER_SAGA,
         orderData: orderData,
@@ -29,7 +28,6 @@ export const purchaseBurger = (orderData, token) => {
 }
 
 export const purchaseBurgerStart = () => {
-    console.log('purchaseBurgerStart')
     return {
         type: actionType.PURCHASE_BURGER_START
     }

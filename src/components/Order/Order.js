@@ -12,7 +12,6 @@ const Order =(props)=> {
     }
 
     const ingredientJSX = ingredients.map(ingredient=>{
-        console.log(ingredient.name)
     return <span style={{
         textTransform: 'capitalize', 
         margin: '0 8px',

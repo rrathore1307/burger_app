@@ -77,7 +77,6 @@ const Auth =(props)=> {
         updatedFormElement.touched = true;
         updatedForm[identifier] = updatedFormElement;
         let formIsValid = true;
-        // console.log('event ', updatedForm)
         for (let formElement in updatedForm) {
             console.log('form')
             formIsValid = updatedForm[formElement].valid && formIsValid;

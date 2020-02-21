@@ -15,7 +15,6 @@ export function* featchOrderSaga(action) {
             })
         }
         yield put(actions.fetchOrderSuccess(fetchOrders))
-        console.log(this.state)
     } catch (error) {
         console.log(error);
         yield put(actions.fetchOrderFailed(error))
@@ -23,7 +22,6 @@ export function* featchOrderSaga(action) {
 }
 
 export function* purchaseBurgerSaga(action) {
-    console.log('purchaseBurgerSaga')
     yield put(actions.purchaseBurgerStart())
     try {
         const response = yield axios.post('/orders.json?auth=' + action.token, action.orderData)

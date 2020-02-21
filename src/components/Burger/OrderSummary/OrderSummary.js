@@ -2,7 +2,6 @@ import React from 'react';
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 const OrderSummary = props => {
-        console.log('OrderSummary', props)
         const summary = Object.keys(props.ingredient)
         .map(igKey => {
             return (

@@ -4,7 +4,6 @@ import {logoutSaga, checkAuthSaga, authUserSaga, authAutoCheck} from './auth'
 import { initIngredientSaga } from './burgerBuilder';
 import { featchOrderSaga, purchaseBurgerSaga } from './order';
 export function* watchAuth() {
-    console.log('call AUTH_INITIAT--')
     yield takeEvery(AUTH_INITIAT, logoutSaga)
     yield takeEvery(AUTH_CHECKOUT_TIME, checkAuthSaga)
     yield takeEvery(AUTH_USER_SAGA, authUserSaga)
@@ -12,11 +11,9 @@ export function* watchAuth() {
     yield takeEvery(DISPATCH_INGREDIENTS_SAGA, initIngredientSaga)
 }
 export function* watchBurgerBuilder() {
-    console.log('call watchBurgerBuilder--')
     yield takeEvery(DISPATCH_INGREDIENTS_SAGA, initIngredientSaga)
 }
 export function* watchOrders() {
-    console.log('call watchOrders--')
     yield takeEvery(INIT_FETCH_ORDER_SAGA, featchOrderSaga)
     yield takeEvery(PURCHASE_BURGER_SAGA, purchaseBurgerSaga)
 }

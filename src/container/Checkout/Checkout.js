@@ -12,14 +12,12 @@ const Checkout = props => {
 
     useEffect (()=>{
         props.onInitPurchase();
-        console.log('[purchased] will mount', props.purchased)
     },[])
 
     const processCheckoutCancel = () => {
         props.history.goBack();
     }
     let summary = <Redirect to='/' />
-    console.log('[purchased]', props.purchased)
 
     if (props.ings) {
         const purchaseRedirect = props.purchased ? <Redirect to='/' /> : null

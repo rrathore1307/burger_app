@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
@@ -18,7 +18,6 @@ const BurgerBuilder = props => {
 
 
     useEffect(() => {
-        console.log("props ings",props.ings)
         props.onInitIngredient();
     }, [])
 
@@ -26,12 +25,10 @@ const BurgerBuilder = props => {
         const sum = Object.keys(updateIngredients).map(igKey => {
             return updateIngredients[igKey]
         }).reduce((pre, current) => (pre + current), 0)
-        console.log('ingredient sum= ' + sum)
         return sum > 0
     }
 
     const purchaseHandler = () => {
-        console.log('purchase')
         setPurchasing(true);
         if (!props.isAuthenticate) {
             props.onSetRedirectPath('/checkout');
@@ -53,7 +50,6 @@ const BurgerBuilder = props => {
     }
     let orderSummary = null;
     let burger = props.error ? <p>ingredient can't be loaded</p> : <Spinner />
-    console.log('burger render', props.ings)
     if (props.ings) {
         burger = (
             <Aux>
