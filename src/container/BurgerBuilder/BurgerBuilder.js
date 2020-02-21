@@ -42,8 +42,8 @@ const BurgerBuilder = props => {
         setPurchasing(false);
     }
     const purchaseContinue = () => {
-        this.props.onInitPurchase();
-        this.props.history.push('/checkout')
+        props.onInitPurchase();
+        props.history.push('/checkout')
     }
     const disableInfo = {
         ...props.ings

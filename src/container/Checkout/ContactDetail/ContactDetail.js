@@ -102,7 +102,6 @@ class ContactDetail extends Component {
             orderFormData[formIdentifier] = this.state.orderForm[formIdentifier].value;
         }
 
-        // console.log(orderFormData);
 
 
         this.setState({
@@ -116,25 +115,6 @@ class ContactDetail extends Component {
         }
 
         this.props.purchaseStart(order, this.props.token);
-        // axios.post('orders.json', order)
-        //     .then(response => {
-        //         this.setState({
-        //             loader: false,
-        //             purchasing: false
-        //         })
-        //         this.props.history.push('/')
-        //         // console.log(response)
-        //     })
-        //     .catch(error => {
-        //         this.setState({
-        //             loader: false,
-        //             purchasing: false
-        //         })
-        //         // console.log(error)
-        //     })
-
-        // console.log('form submited')
-        // console.log(this.props)
     }
 
     handleInputChange = (event, identifier) => {
