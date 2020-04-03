@@ -12,11 +12,14 @@ import thunk from 'redux-thunk'
 import createReduxMiddleware from 'redux-saga';
 import authReducer from './store/reducers/auth';
 import { watchAuth, watchBurgerBuilder, watchOrders } from './store/sagas';
+import { reducer as formReducer } from 'redux-form'
 const sagaMiddleWare = createReduxMiddleware();
 const rootReducer = combineReducers({
     burgerReducer: burgerBuilder,
     orderReducer: order,
-    authReducer: authReducer
+    authReducer: authReducer,
+    form: formReducer     // <---- Mounted at 'form'
+
 })
 const logger = store => {
     return next => {

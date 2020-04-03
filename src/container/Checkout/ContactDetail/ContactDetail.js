@@ -7,6 +7,8 @@ import Input from '../../../components/UI/Input/Input';
 import * as actionType from '../../../store/actions/index'
 import { connect } from 'react-redux';
 import { updatedObject, checkValidity } from '../../../Shared/utility'
+import ContactForm from '../../../components/UI/ReduxForm/ContactForm';
+import MaterialUiForm from '../../../components/UI/ReduxForm/materialUIForm';
 const ContactDetail =props=> {
     const [formIsValidState, setFormIsValid] = useState(false)
     const [ordeFormState, setOrderForm] = useState({
@@ -113,6 +115,19 @@ const ContactDetail =props=> {
         props.purchaseStart(order, props.token);
     }
 
+    const handleSubmit = (values) => {
+        // Do something with the form values
+        // event.preventDefault();
+        console.log(values);
+        const order = {
+            ingredients: props.ings,
+            price: props.price,
+            orderData: values,
+            userId: props.userId
+        }
+
+        props.purchaseStart(order, props.token);
+      }
     const handleInputChange = (event, identifier) => {
         const updatedFormElement = updatedObject(ordeFormState.orderForm[identifier], {
             value: event.target.value,
@@ -164,7 +179,9 @@ const ContactDetail =props=> {
         return (
             <div className='contactDiv'>
                 Please fill Contact form
-            {form}
+            {/* {form} */}
+            <ContactForm onSubmit={handleSubmit}  />
+            {/* <MaterialUiForm onSubmit={handleSubmit} /> */}
             </div>
         )
 }
